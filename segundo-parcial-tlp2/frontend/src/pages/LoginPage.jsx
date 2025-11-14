@@ -1,22 +1,28 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useForm } from '../hooks/useForm'
+
+
 
 
 export const LoginPage = () => {
   // TODO: Integrar lógica de autenticación aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
+  const { handleChange, handleReset, formState } = useForm({ username: '', password: '' })
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       console.log('llega hasta haca este es el try')
       const res = await fetch("http://localhost:3000/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        //body: JSON.stringify(values),
+        body: JSON.stringify(formState),
       });
+      if (res.ok) { navigate("/home"); } else { alert(data.message || "Credenciales incorrectas"); handleReset() }
+
     } catch (err) {
       console.log('Entro por el catch error')
       console.error(err);
@@ -53,6 +59,8 @@ export const LoginPage = () => {
               id="username"
               name="username"
               placeholder="Ingresa tu usuario"
+              value={formState.username}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
@@ -70,6 +78,8 @@ export const LoginPage = () => {
               id="password"
               name="password"
               placeholder="Ingresa tu contraseña"
+              value={formState.password}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />

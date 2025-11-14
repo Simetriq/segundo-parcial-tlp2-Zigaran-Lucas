@@ -9,7 +9,8 @@ export const PublicRoute = () => {
     try {
       const response = await fetch("http://localhost:3000/api/profile", {
         method: "GET",
-        credentials: "include",
+        headers: { "Content-Type": "application/json", },
+        credentials: "include"
       });
 
       if (response.ok) {

@@ -1,9 +1,28 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useForm } from '../hooks/useForm'
 
 export const RegisterPage = () => {
   // TODO: Integrar lógica de registro aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
+  const { handleChange, handleReset, formState } = useForm({ username: '', email: '', password: '', name: '', lastname: '' })
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch('http://localhost:3000/api/register', {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        body: JSON.stringify(formState),
+      })
+    } catch (error) {
+      console.error(err);
+      alert("Error al conectar con el servidor");
+      handleReset();
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
@@ -19,7 +38,7 @@ export const RegisterPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={(event) => { }}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -32,6 +51,8 @@ export const RegisterPage = () => {
               id="username"
               name="username"
               placeholder="Elige un nombre de usuario"
+              value={formState.username}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
@@ -49,6 +70,8 @@ export const RegisterPage = () => {
               id="email"
               name="email"
               placeholder="tu@email.com"
+              value={formState.email}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />

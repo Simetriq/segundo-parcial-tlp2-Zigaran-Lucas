@@ -1,14 +1,13 @@
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router";
 
 export const Navbar = () => {
-  const navigate = Navigate()
+  const navigate = useNavigate()
   // TODO: Obtener datos del usuario desde /api/profile
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
   // TODO: Manejar errores apropiadamente
-  const handleSubmit = async (e) => {
+  const handleLogout = async (e) => {
     e.preventDefault();
-    // setLoading(true);
     try {
       const res = await fetch("http://localhost:3000/api/logout", {
         method: "POST",
@@ -16,7 +15,7 @@ export const Navbar = () => {
         credentials: "include",
       });
 
-      if (res.ok) { navigate('/home') }
+      if (res.ok) { navigate('/login') }
     } catch (err) {
       console.error(err);
       alert("Error al conectar con el servidor");
@@ -39,10 +38,8 @@ export const Navbar = () => {
           </span>
 
           <button
-            onClick={() => {
-              // TODO: Implementar handleLogout aquí
-              handleSubmit
-            }}
+            // TODO: Implementar handleLogout aquí
+            onClick={(e) => { handleLogout(e) }}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
             Cerrar Sesión
