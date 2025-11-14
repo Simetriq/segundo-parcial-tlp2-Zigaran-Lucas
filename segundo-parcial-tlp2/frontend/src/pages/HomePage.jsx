@@ -1,4 +1,4 @@
-
+import { useState, useEffect } from "react";
 
 export const HomePage = () => {
   // TODO: Integrar lógica para obtener superhéroes desde la API
@@ -18,7 +18,7 @@ export const HomePage = () => {
 
       const [profileRes, heroRes] = await Promise.all([
         profilePromise,
-        tasksPromise,
+        heroPromise,
       ]);
 
       if (profileRes.ok) {
@@ -31,7 +31,7 @@ export const HomePage = () => {
       if (heroRes.ok) {
         const heroData = await heroRes.json();
         setHeros(
-          heroData.tasks || (Array.isArray(heroData) ? heroData : []),
+          heroData || (Array.isArray(heroData) ? heroData : []),
         );
       } else {
         console.error("Error al cargar los heroes");
@@ -39,7 +39,7 @@ export const HomePage = () => {
     } catch (error) {
       console.error("Error en las peticiones de Home:", error);
     }
-  }
+  };
   useEffect(() => {
     loadHomeData();
   }, []);
@@ -96,7 +96,7 @@ export const HomePage = () => {
         <button
           // TODO: Implementar función para recargar superhéroes
           onClick={() => {
-
+            loadHomeData();
           }}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition-colors"
         >
