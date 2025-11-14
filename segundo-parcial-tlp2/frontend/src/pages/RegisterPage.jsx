@@ -12,11 +12,11 @@ export const RegisterPage = () => {
     e.preventDefault();
 
     const payload = {
-      name: formState.firstname,
-      lastname: formState.lastname,
       username: formState.username,
       email: formState.email,
       password: formState.password,
+      name: formState.name,
+      lastname: formState.lastname,
     };
     try {
       const res = await fetch('http://localhost:3000/api/register', {
@@ -143,7 +143,7 @@ export const RegisterPage = () => {
               id="lastname"
               name="lastname"
               placeholder="Tu apellido"
-              value={formState.username}
+              value={formState.lastname}
               onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required

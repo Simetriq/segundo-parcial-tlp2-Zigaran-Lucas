@@ -1,3 +1,5 @@
+
+
 export const HomePage = () => {
   // TODO: Integrar lógica para obtener superhéroes desde la API
   // TODO: Implementar useState para almacenar la lista de superhéroes
