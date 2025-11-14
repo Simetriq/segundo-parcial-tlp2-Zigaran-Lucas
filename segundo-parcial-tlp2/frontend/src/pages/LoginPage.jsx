@@ -1,9 +1,29 @@
 import { Link } from "react-router";
 
+
 export const LoginPage = () => {
   // TODO: Integrar lógica de autenticación aquí
   // TODO: Implementar useForm para el manejo del formulario
   // TODO: Implementar función handleSubmit
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log('llega hasta haca este es el try')
+      const res = await fetch("http://localhost:3000/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+        //body: JSON.stringify(values),
+      });
+    } catch (err) {
+      console.log('Entro por el catch error')
+      console.error(err);
+      alert("Error al conectar con el servidor");
+      handleReset();
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4 py-8">
@@ -20,7 +40,7 @@ export const LoginPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => {}}>
+        <form onSubmit={(event) => { handleSubmit(event) }}>
           <div className="mb-4">
             <label
               htmlFor="username"

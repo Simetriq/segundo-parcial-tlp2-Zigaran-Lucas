@@ -1,8 +1,29 @@
+import { Navigate } from "react-router";
+
 export const Navbar = () => {
+  const navigate = Navigate()
   // TODO: Obtener datos del usuario desde /api/profile
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
   // TODO: Manejar errores apropiadamente
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // setLoading(true);
+    try {
+      const res = await fetch("http://localhost:3000/api/logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      });
+
+      if (res.ok) { navigate('/home') }
+    } catch (err) {
+      console.error(err);
+      alert("Error al conectar con el servidor");
+      handleReset();
+    }
+  }
+
 
   const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
 
@@ -20,6 +41,7 @@ export const Navbar = () => {
           <button
             onClick={() => {
               // TODO: Implementar handleLogout aquí
+              handleSubmit
             }}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
@@ -29,4 +51,4 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-};
+}

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
-import Loading from "../components/Loading";
+import { Loading } from "../components/Loading";
 
 export const PublicRoute = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -18,7 +18,7 @@ export const PublicRoute = () => {
         setIsAuthenticated(false);
       }
     } catch (error) {
-      console.error("Error verificando autenticación:", error);
+      console.error("Error verificando autenticación: desde el frontend", error);
       setIsAuthenticated(false);
     }
   };
