@@ -1,11 +1,34 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 export const Navbar = () => {
-  const navigate = useNavigate()
   // TODO: Obtener datos del usuario desde /api/profile
   // TODO: Implementar función handleLogout con POST a /api/logout usando credentials: 'include'
   // TODO: Después del logout exitoso, redireccionar a /login
   // TODO: Manejar errores apropiadamente
+  const navigate = useNavigate();
+  const [userName, setUserName] = useState("Usuario");
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const res = await fetch("http://localhost:3000/api/profile", {
+          credentials: "include",
+        });
+        if (res.ok) {
+          const data = await res.json();
+          setUserName(`${data.user.name} ${data.user.lastname}`);
+        } else {
+          setUserName("Usuario");
+        }
+      } catch (error) {
+        console.error("Error obteniendo perfil:", error);
+        setUserName("Usuario");
+      }
+    };
+    fetchProfile();
+  }, []);
+
   const handleLogout = async (e) => {
     e.preventDefault();
     try {
@@ -15,16 +38,14 @@ export const Navbar = () => {
         credentials: "include",
       });
 
-      if (res.ok) { navigate('/login') }
+      if (res.ok) {
+        navigate("/login");
+      }
     } catch (err) {
       console.error(err);
       alert("Error al conectar con el servidor");
-      handleReset();
     }
-  }
-
-
-  const userName = "Usuario"; // TODO: Reemplazar con el nombre real del usuario obtenido de /api/profile
+  };
 
   return (
     <nav className="bg-gray-900 text-white h-16 left-0 right-0 shadow-lg sticky top-0 z-50">
@@ -38,8 +59,7 @@ export const Navbar = () => {
           </span>
 
           <button
-            // TODO: Implementar handleLogout aquí
-            onClick={(e) => { handleLogout(e) }}
+            onClick={handleLogout}
             className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded transition-colors font-medium"
           >
             Cerrar Sesión
@@ -48,4 +68,4 @@ export const Navbar = () => {
       </div>
     </nav>
   );
-}
+};

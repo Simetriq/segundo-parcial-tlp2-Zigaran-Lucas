@@ -4,6 +4,47 @@ export const HomePage = () => {
   // TODO: Integrar lógica para obtener superhéroes desde la API
   // TODO: Implementar useState para almacenar la lista de superhéroes
   // TODO: Implementar función para recargar superhéroes
+  const [userData, setUserData] = useState(null);
+  const [Heros, setHeros] = useState([]);
+
+  const loadHomeData = async () => {
+    try {
+      const profilePromise = fetch("http://localhost:3000/api/profile", {
+        credentials: "include",
+      });
+      const heroPromise = fetch("http://localhost:3000/api/superheroes", {
+        credentials: "include",
+      });
+
+      const [profileRes, heroRes] = await Promise.all([
+        profilePromise,
+        tasksPromise,
+      ]);
+
+      if (profileRes.ok) {
+        const profileData = await profileRes.json();
+        setUserData(profileData.user);
+      } else {
+        console.error("Error al cargar el perfil");
+      }
+
+      if (heroRes.ok) {
+        const heroData = await heroRes.json();
+        setHeros(
+          heroData.tasks || (Array.isArray(heroData) ? heroData : []),
+        );
+      } else {
+        console.error("Error al cargar los heroes");
+      }
+    } catch (error) {
+      console.error("Error en las peticiones de Home:", error);
+    }
+  }
+  useEffect(() => {
+    loadHomeData();
+  }, []);
+
+
 
   // Datos de ejemplo para las cards
   const superheroes = [
@@ -53,8 +94,9 @@ export const HomePage = () => {
 
       <div className="flex justify-center mb-8">
         <button
+          // TODO: Implementar función para recargar superhéroes
           onClick={() => {
-            // TODO: Implementar función para recargar superhéroes
+
           }}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition-colors"
         >
