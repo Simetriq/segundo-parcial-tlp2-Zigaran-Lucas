@@ -10,13 +10,29 @@ export const RegisterPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const payload = {
+      name: formState.firstname,
+      lastname: formState.lastname,
+      username: formState.username,
+      email: formState.email,
+      password: formState.password,
+    };
     try {
       const res = await fetch('http://localhost:3000/api/register', {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify(formState),
+        body: JSON.stringify(payload),
       })
+      const data = await res.json();
+
+      if (res.ok) {
+        navigate("/login");
+      } else {
+        alert(data.message || "Error al crear la cuenta");
+        handleReset();
+      }
     } catch (error) {
       console.error(err);
       alert("Error al conectar con el servidor");
@@ -38,7 +54,7 @@ export const RegisterPage = () => {
           </p>
         </div>
 
-        <form onSubmit={(event) => { }}>
+        <form onSubmit={(event) => { handleSubmit(event) }}>
           <div className="mb-4">
             <label
               htmlFor="username"
@@ -89,6 +105,8 @@ export const RegisterPage = () => {
               id="password"
               name="password"
               placeholder="Crea una contraseña segura"
+              value={formState.password}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
@@ -106,6 +124,8 @@ export const RegisterPage = () => {
               id="name"
               name="name"
               placeholder="Tu nombre"
+              value={formState.name}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
@@ -123,6 +143,8 @@ export const RegisterPage = () => {
               id="lastname"
               name="lastname"
               placeholder="Tu apellido"
+              value={formState.username}
+              onChange={handleChange}
               className="w-full border border-gray-300 rounded p-3 focus:outline-none focus:ring-2 focus:ring-green-500"
               required
             />
