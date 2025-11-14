@@ -7,6 +7,11 @@ export const HomePage = () => {
   const [userData, setUserData] = useState(null);
   const [Heros, setHeros] = useState([]);
 
+  const handleReset = (e) => {
+    window.location.reload()
+  };
+
+
   const loadHomeData = async () => {
     try {
       const profilePromise = fetch("http://localhost:3000/api/profile", {
@@ -94,10 +99,7 @@ export const HomePage = () => {
 
       <div className="flex justify-center mb-8">
         <button
-          // TODO: Implementar función para recargar superhéroes
-          onClick={() => {
-            loadHomeData();
-          }}
+          onClick={handleReset}
           className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded transition-colors"
         >
           Recargar
